@@ -1,0 +1,66 @@
+[
+  {
+    "count": 4,
+    "description": "Дополнение",
+    "id": "7567ec4b-b10c-48c5-9345-fc73c48a80aa",
+    "price": 87,
+    "img": "https://igraj.by/upload/iblock/f5a/f5a48e0762001ad9be2371423df702ab.jpg",
+    "title": "Крылья: Птицы Европы"
+  },
+  {
+    "count": 6,
+    "description": "Short Product Description3",
+    "id": "7567ec4b-b10c-48c5-9345-fc73c48a80a0",
+    "price": 175,
+    "img": "https://igraj.by/upload/Sh/imageCache/6ac/511/2f4c76754a96582d6db19f00e72a312e.jpg",
+    "title": "Маракайбо"
+  },
+  {
+    "count": 7,
+    "description": "Short Product Description2",
+    "id": "7567ec4b-b10c-48c5-9345-fc73c48a80a2",
+    "price": 17,
+    "img": "https://igraj.by/upload/Sh/imageCache/86d/efa/f6f4124a393a4c6c0a641c0625ae4368.jpg",
+    "title": "Соображарий Супер"
+  },
+  {
+    "count": 12,
+    "description": "Short Product Description7",
+    "id": "7567ec4b-b10c-48c5-9345-fc73c48a80a1",
+    "price": 116,
+    "img": "https://igraj.by/upload/Sh/imageCache/259/95a/420580760fcf1a89aac7c1929b2860f6.jpg",
+    "title": "Цивилизация Сида Мейера: Новый рассвет. Терра инкогнита"
+  },
+  {
+    "count": 7,
+    "description": "Short Product Description2",
+    "id": "7567ec4b-b10c-48c5-9345-fc73c48a80a3",
+    "price": 31,
+    "img": "https://igraj.by/upload/Sh/imageCache/47c/d51/cae2ade43f0046c6da31e6dac6c8840e.jpg",
+    "title": "Бэнг! Звёздные Войны"
+  },
+  {
+    "count": 8,
+    "description": "Short Product Description4",
+    "id": "7567ec4b-b10c-48c5-9345-fc73348a80a6",
+    "price": 420,
+    "img": "https://igraj.by/upload/Sh/imageCache/5cb/8df/3bb1ac23ac7ffa8255a6bff45d3fb400.jpg",
+    "title": "Немезида / Nemesis"
+  },
+  {
+    "count": 2,
+    "description": "Short Product Descriptio1",
+    "id": "7567ec4b-b10c-48c5-9445-fc73c48a80a5",
+    "price": 175,
+    "img": "https://igraj.by/upload/Sh/imageCache/633/662/aeb2601974000ce9a38f8446f233e766.jpg",
+    "title": "Остров Духов"
+  },
+  {
+    "count": 3,
+    "description": "Short Product Description7",
+    "id": "7567ec4b-b10c-45c5-9345-fc73c48a80a4",
+    "price": 105,
+    "img": "https://igraj.by/upload/Sh/imageCache/b1e/936/7108af77ff6beaf9c3042c8cf0a280e1.png",
+    "title": "Ярость Дракулы"
+  }
+]

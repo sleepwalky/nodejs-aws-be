@@ -11,14 +11,17 @@ const serverlessConfiguration: Serverless = {
   custom: {
     webpack: {
       webpackConfig: './webpack.config.js',
-      includeModules: true
-    }
+      includeModules: true,
+    },
   },
   // Add the serverless-webpack plugin
   plugins: ['serverless-webpack'],
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
+    profile: 'rss',
+    region: 'eu-west-1',
+    stage: 'dev',
     apiGateway: {
       minimumCompressionSize: 1024,
     },
@@ -27,18 +30,36 @@ const serverlessConfiguration: Serverless = {
     },
   },
   functions: {
-    hello: {
-      handler: 'handler.hello',
+    getProductList: {
+      handler: 'getProductList.getProductList',
       events: [
         {
           http: {
             method: 'get',
-            path: 'hello',
-          }
-        }
-      ]
-    }
-  }
-}
+            path: 'products',
+          },
+        },
+      ],
+    },
+    getProductById: {
+      handler: 'getProductById.getProductById',
+      events: [
+        {
+          http: {
+            method: 'get',
+            path: 'products/{productId}',
+            request: {
+              parameters: {
+                paths: {
+                  productId: true,
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+  },
+};
 
 module.exports = serverlessConfiguration;
