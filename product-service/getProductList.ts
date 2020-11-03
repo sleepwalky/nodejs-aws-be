@@ -4,7 +4,7 @@ import { commonHeaders } from './commonHeaders';
 import { getProductsFromDb } from './services';
 
 export const getProductList: APIGatewayProxyHandler = async (
-  event,
+  _event,
   _context
 ) => {
   try {
