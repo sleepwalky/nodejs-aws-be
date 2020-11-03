@@ -21,7 +21,7 @@ const serverlessConfiguration: Serverless = {
     runtime: 'nodejs12.x',
     profile: 'rss',
     region: 'eu-west-1',
-    stage: 'dev',
+    stage: 'prod',
     apiGateway: {
       minimumCompressionSize: 1024,
     },
@@ -37,6 +37,7 @@ const serverlessConfiguration: Serverless = {
           http: {
             method: 'get',
             path: 'products',
+            cors: true,
           },
         },
       ],
@@ -48,6 +49,7 @@ const serverlessConfiguration: Serverless = {
           http: {
             method: 'get',
             path: 'products/{productId}',
+            cors: true,
             request: {
               parameters: {
                 paths: {
