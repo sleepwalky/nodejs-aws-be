@@ -11,7 +11,7 @@ describe('getProductList', () => {
     jest.clearAllMocks();
   });
 
-  it('should return 404 if there is no product with such id', async () => {
+  it('should return product list', async () => {
     (getProductsFromDb as jest.Mock).mockResolvedValue([
       { id: '1' },
       { id: '2' },
