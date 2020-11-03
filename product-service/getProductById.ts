@@ -16,7 +16,7 @@ export const getProductById: APIGatewayProxyHandler = async (
     if (!product) {
       return {
         statusCode: 404,
-        header: commonHeaders,
+        headers: commonHeaders,
         body: JSON.stringify({
           error: {
             message: 'Product not exist',
@@ -27,7 +27,7 @@ export const getProductById: APIGatewayProxyHandler = async (
 
     return {
       statusCode: 200,
-      header: commonHeaders,
+      headers: commonHeaders,
       body: JSON.stringify(
         {
           ...product,
@@ -39,7 +39,7 @@ export const getProductById: APIGatewayProxyHandler = async (
   } catch (error) {
     return {
       statusCode: 500,
-      header: commonHeaders,
+      headers: commonHeaders,
       body: JSON.stringify({
         error: {
           message: "Couldn't load products from DB",
