@@ -21,7 +21,7 @@ const serverlessConfiguration: Serverless = {
     runtime: 'nodejs12.x',
     profile: 'rss',
     region: 'eu-west-1',
-    stage: 'prod',
+    stage: 'dev',
     apiGateway: {
       minimumCompressionSize: 1024,
     },
