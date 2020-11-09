@@ -1,13 +1,14 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
 import { commonHeaders } from './commonHeaders';
-import { getProductsFromDb } from './services';
+import { getProductsFromDb } from './db/product';
 
 export const getProductList: APIGatewayProxyHandler = async (
-  _event,
+  event,
   _context
 ) => {
   try {
+    console.log(event);
     const products = await getProductsFromDb();
     return {
       statusCode: 200,

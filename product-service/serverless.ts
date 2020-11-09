@@ -1,4 +1,7 @@
 import type { Serverless } from 'serverless/aws';
+import { config } from 'dotenv';
+
+config();
 
 const serverlessConfiguration: Serverless = {
   service: {
@@ -21,12 +24,17 @@ const serverlessConfiguration: Serverless = {
     runtime: 'nodejs12.x',
     profile: 'rss',
     region: 'eu-west-1',
-    stage: 'dev',
+    stage: 'prod',
     apiGateway: {
       minimumCompressionSize: 1024,
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      PG_HOST: process.env.PG_HOST,
+      PG_PORT: process.env.PG_PORT,
+      PG_DATABASE: process.env.PG_DATABASE,
+      PG_USERNAME: process.env.PG_USERNAME,
+      PG_PASSWORD: process.env.PG_PASSWORD,
     },
   },
   functions: {
@@ -57,6 +65,18 @@ const serverlessConfiguration: Serverless = {
                 },
               },
             },
+          },
+        },
+      ],
+    },
+    createProduct: {
+      handler: 'createProduct.createProduct',
+      events: [
+        {
+          http: {
+            method: 'post',
+            path: 'products',
+            cors: true,
           },
         },
       ],
