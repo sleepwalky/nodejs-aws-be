@@ -1,7 +1,7 @@
 import { getProductById } from '../getProductById';
-import { getProductsFromDb } from '../services';
+import { getProductsFromDb } from '../db/product';
 
-jest.mock('../services', () => ({
+jest.mock('../db/product', () => ({
   __esModule: true,
   getProductsFromDb: jest.fn(),
 }));
