@@ -1,10 +1,10 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
 import { S3, PutObjectCommand } from '@aws-sdk/client-s3';
-
 import { S3RequestPresigner } from '@aws-sdk/s3-request-presigner';
 import { createRequest } from '@aws-sdk/util-create-request';
 import { formatUrl } from '@aws-sdk/util-format-url';
+import { commonHeaders } from '../../commonHeaders';
 
 const REGION = 'eu-west-1';
 const BUCKET = 'store-imported-products';
@@ -20,6 +20,7 @@ export const importProductsFile: APIGatewayProxyHandler = async (
   if (!name) {
     return {
       statusCode: 400,
+      headers: commonHeaders,
       body: JSON.stringify(
         {
           error: 'Query parameter name is required',
@@ -31,7 +32,8 @@ export const importProductsFile: APIGatewayProxyHandler = async (
   }
   const key = `${PREFIX}/${name}`;
 
-  const v3Client = new S3({ region: REGION });
+  // @ts-ignore
+  const v3Client = new S3({ region: REGION, signatureVersion: 'v4' });
 
   try {
     //Create an S3RequestPresigner object
@@ -39,7 +41,10 @@ export const importProductsFile: APIGatewayProxyHandler = async (
     // Create request
     const request = await createRequest(
       v3Client,
-      new PutObjectCommand({ Key: key, Bucket: BUCKET })
+      new PutObjectCommand({
+        Key: key,
+        Bucket: BUCKET,
+      })
     );
     // Define the duration until expiration of the presigned URL
     // const expiration = new Date(Date.now() + EXPIRATION);
@@ -55,6 +60,7 @@ export const importProductsFile: APIGatewayProxyHandler = async (
     console.log('Error creating presigned URL', err);
     return {
       statusCode: 400,
+      headers: commonHeaders,
       body: JSON.stringify(
         {
           error: err,
@@ -67,12 +73,7 @@ export const importProductsFile: APIGatewayProxyHandler = async (
 
   return {
     statusCode: 200,
-    body: JSON.stringify(
-      {
-        url: signedUrl,
-      },
-      null,
-      2
-    ),
+    headers: commonHeaders,
+    body: signedUrl,
   };
 };

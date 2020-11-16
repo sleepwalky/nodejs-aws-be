@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
-import { commonHeaders } from './commonHeaders';
+import { commonHeaders } from '../commonHeaders';
 import { ProductSchema } from './models/Product';
 import { createProductDb } from './db/product';
 

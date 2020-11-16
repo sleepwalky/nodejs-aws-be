@@ -31,8 +31,8 @@ const serverlessConfiguration: Serverless = {
       {
         Sid: 'Stmt1605539376440',
         Effect: 'Allow',
-        Action: 's3:PutObject',
-        Resource: 'arn:aws:s3:::store-imported-products',
+        Action: ['s3:PutObject'],
+        Resource: 'arn:aws:s3:::store-imported-products/*',
       },
     ],
   },
