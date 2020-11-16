@@ -7,6 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^1.0.0-rc.6",
+    "@aws-sdk/s3-request-presigner": "^1.0.0-rc.6",
+    "@aws-sdk/util-create-request": "^1.0.0-rc.5",
+    "@aws-sdk/util-format-url": "^1.0.0-rc.5",
+    "serverless": "^2.11.1",
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
