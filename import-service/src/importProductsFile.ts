@@ -44,6 +44,7 @@ export const importProductsFile: APIGatewayProxyHandler = async (
       new PutObjectCommand({
         Key: key,
         Bucket: BUCKET,
+        ContentType: 'text/csv',
       })
     );
     // Define the duration until expiration of the presigned URL
@@ -59,7 +60,7 @@ export const importProductsFile: APIGatewayProxyHandler = async (
   } catch (err) {
     console.log('Error creating presigned URL', err);
     return {
-      statusCode: 400,
+      statusCode: 500,
       headers: commonHeaders,
       body: JSON.stringify(
         {
