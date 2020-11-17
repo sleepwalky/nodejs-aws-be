@@ -31,7 +31,7 @@ const serverlessConfiguration: Serverless = {
       {
         Sid: 'Stmt1605539376440',
         Effect: 'Allow',
-        Action: ['s3:PutObject'],
+        Action: ['s3:PutObject', 's3:DeleteObject', 's3:GetObject'],
         Resource: 'arn:aws:s3:::store-imported-products/*',
       },
     ],
@@ -52,6 +52,19 @@ const serverlessConfiguration: Serverless = {
                 },
               },
             },
+          },
+        },
+      ],
+    },
+    importFileParser: {
+      handler: 'handlers.importFileParser',
+      events: [
+        {
+          s3: {
+            bucket: 'store-imported-products',
+            event: 's3:ObjectCreated:*',
+            rules: [{ prefix: 'uploaded/', suffix: '.csv' }],
+            existing: true,
           },
         },
       ],
