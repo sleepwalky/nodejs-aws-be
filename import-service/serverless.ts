@@ -58,6 +58,7 @@ const serverlessConfiguration: Serverless = {
     },
     importFileParser: {
       handler: 'handlers.importFileParser',
+      timeout: 10,
       events: [
         {
           s3: {

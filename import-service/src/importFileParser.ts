@@ -16,32 +16,36 @@ export const importFileParser: S3Handler = async (event, _context) => {
       Key: filename,
     });
     // Body is a readable stream https://github.com/aws/aws-sdk-js-v3/issues/1096#issuecomment-620900466
-    res.Body.pipe(csvParser())
-      .on('data', (data) => results.push(data))
-      .on('end', async () => {
-        console.log(results);
+    await new Promise((resolve, reject) => {
+      res.Body.pipe(csvParser())
+        .on('data', (data) => results.push(data))
+        .on('end', async () => {
+          console.log(results);
 
-        const newFileName = filename.slice(filename.indexOf('/') + 1);
-        try {
-          await v3Client.send(
-            new CopyObjectCommand({
-              Bucket: bucket.name,
-              Key: `parsed/${newFileName}`,
-              CopySource: `${bucket.name}/${filename}`,
-            })
-          );
-          console.log('CopyObjectCommand', `parsed/${newFileName}`);
-          await v3Client.send(
-            new DeleteObjectCommand({
-              Bucket: bucket.name,
-              Key: filename,
-            })
-          );
-          console.log('DeleteObjectCommand', filename);
-        } catch (error) {
-          console.log(error);
-        }
-      });
+          const newFileName = filename.slice(filename.indexOf('/') + 1);
+          try {
+            await v3Client.send(
+              new CopyObjectCommand({
+                Bucket: bucket.name,
+                Key: `parsed/${newFileName}`,
+                CopySource: `${bucket.name}/${filename}`,
+              })
+            );
+            console.log('CopyObjectCommand', `parsed/${newFileName}`);
+            await v3Client.send(
+              new DeleteObjectCommand({
+                Bucket: bucket.name,
+                Key: filename,
+              })
+            );
+            console.log('DeleteObjectCommand', filename);
+            resolve();
+          } catch (error) {
+            console.log(error);
+            reject(error);
+          }
+        });
+    });
   } catch (error) {
     console.log(error);
   }
