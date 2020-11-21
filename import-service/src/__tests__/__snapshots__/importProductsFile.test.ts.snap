@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`importProductsFile should return 200 and signed url 1`] = `
+Object {
+  "body": "signedUrl",
+  "headers": Object {
+    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Origin": "*",
+  },
+  "statusCode": 200,
+}
+`;
+
+exports[`importProductsFile should return 400 if name is not passed in queryparams 1`] = `
+Object {
+  "body": "{
+  \\"error\\": \\"Query parameter name is required\\"
+}",
+  "headers": Object {
+    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Origin": "*",
+  },
+  "statusCode": 400,
+}
+`;
+
+exports[`importProductsFile should return 500 if something goes wrong 1`] = `
+Object {
+  "body": "{
+  \\"error\\": \\"error\\"
+}",
+  "headers": Object {
+    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Origin": "*",
+  },
+  "statusCode": 500,
+}
+`;
