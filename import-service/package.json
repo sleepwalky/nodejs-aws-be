@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^1.0.0-rc.6",
+    "@aws-sdk/client-sqs": "^1.0.0-rc.7",
     "@aws-sdk/s3-request-presigner": "^1.0.0-rc.6",
     "@aws-sdk/util-create-request": "^1.0.0-rc.5",
     "@aws-sdk/util-format-url": "^1.0.0-rc.5",

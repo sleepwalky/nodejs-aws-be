@@ -24,10 +24,19 @@ const serverlessConfiguration: Serverless = {
     runtime: 'nodejs12.x',
     profile: 'rss',
     region: 'eu-west-1',
-    stage: 'prod',
+    stage: 'dev',
     apiGateway: {
       minimumCompressionSize: 1024,
     },
+    iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: 'sqs:*',
+        Resource:
+          '${cf:import-service-${self:provider.stage}.catalogItemsQueueArn}',
+      },
+    ],
+
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       PG_HOST: process.env.PG_HOST,
@@ -39,7 +48,7 @@ const serverlessConfiguration: Serverless = {
   },
   functions: {
     getProductList: {
-      handler: 'getProductList.getProductList',
+      handler: 'handlers.getProductList',
       events: [
         {
           http: {
@@ -51,7 +60,7 @@ const serverlessConfiguration: Serverless = {
       ],
     },
     getProductById: {
-      handler: 'getProductById.getProductById',
+      handler: 'handlers.getProductById',
       events: [
         {
           http: {
@@ -70,13 +79,25 @@ const serverlessConfiguration: Serverless = {
       ],
     },
     createProduct: {
-      handler: 'createProduct.createProduct',
+      handler: 'handlers.createProduct',
       events: [
         {
           http: {
             method: 'post',
             path: 'products',
             cors: true,
+          },
+        },
+      ],
+    },
+    catalogBatchProcess: {
+      handler: 'handlers.catalogBatchProcess',
+      events: [
+        {
+          sqs: {
+            batchSize: 5,
+            arn:
+              '${cf:import-service-${self:provider.stage}.catalogItemsQueueArn}',
           },
         },
       ],

@@ -1,21 +1,34 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
-import { commonHeaders } from './commonHeaders';
-import { getProductsFromDb } from './db/product';
+import { commonHeaders } from '../../commonHeaders';
+import { getProductByIdFromDb } from '../db/product';
 
-export const getProductList: APIGatewayProxyHandler = async (
+export const getProductById: APIGatewayProxyHandler = async (
   event,
   _context
 ) => {
   try {
     console.log(event);
-    const products = await getProductsFromDb();
+    const product = await getProductByIdFromDb(event.pathParameters.productId);
+
+    if (!product) {
+      return {
+        statusCode: 404,
+        headers: commonHeaders,
+        body: JSON.stringify({
+          error: {
+            message: 'Product not exist',
+          },
+        }),
+      };
+    }
+
     return {
       statusCode: 200,
       headers: commonHeaders,
       body: JSON.stringify(
         {
-          items: products,
+          ...product,
         },
         null,
         2
