@@ -35,6 +35,13 @@ const serverlessConfiguration: Serverless = {
         Resource:
           '${cf:import-service-${self:provider.stage}.catalogItemsQueueArn}',
       },
+      {
+        Effect: 'Allow',
+        Action: 'sns:*',
+        Resource: {
+          Ref: 'SNSTopic',
+        },
+      },
     ],
 
     environment: {
@@ -44,6 +51,29 @@ const serverlessConfiguration: Serverless = {
       PG_DATABASE: process.env.PG_DATABASE,
       PG_USERNAME: process.env.PG_USERNAME,
       PG_PASSWORD: process.env.PG_PASSWORD,
+      SNS_ARN: {
+        Ref: 'SNSTopic',
+      },
+    },
+  },
+  resources: {
+    Resources: {
+      SNSTopic: {
+        Type: 'AWS::SNS::Topic',
+        Properties: {
+          TopicName: 'catalog-process-topic',
+        },
+      },
+      SNSSubscription: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Endpoint: 'keeweery@gmail.com',
+          Protocol: 'email',
+          TopicArn: {
+            Ref: 'SNSTopic',
+          },
+        },
+      },
     },
   },
   functions: {

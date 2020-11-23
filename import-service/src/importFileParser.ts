@@ -1,5 +1,5 @@
 import { DeleteObjectCommand, CopyObjectCommand, S3 } from '@aws-sdk/client-s3';
-import { SQS } from '@aws-sdk/client-sqs';
+import { SQS } from 'aws-sdk';
 import { S3Handler } from 'aws-lambda';
 import * as csvParser from 'csv-parser';
 
