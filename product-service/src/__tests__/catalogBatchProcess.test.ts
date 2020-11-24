@@ -3,25 +3,13 @@ import { SNS } from 'aws-sdk/';
 import { records } from '../__fixtures__/SQSRecords';
 import { createProductDb } from '../../db/product';
 
+function mockClass(spec) {
+  const proto = jest.fn(() => spec);
+  proto.prototype = spec;
+  return proto;
+}
+
 jest.mock('../../db/product');
-
-// jest.mock('aws-sdk', () => {
-//   return jest.fn().mockImplementation(() => {
-//     return {
-//       SNS: {
-//         publish: jest.fn(),
-//       },
-//     };
-//   });
-// });
-
-// jest.mock('aws-sdk', () => ({
-//   SNS: jest.fn().mockImplementation(() => ({
-//     publish: jest.fn().mockImplementation(() => ({
-//       promise: jest.fn(),
-//     })),
-//   })),
-// }));
 
 jest.mock('aws-sdk', () => ({
   SNS: mockClass({
@@ -85,9 +73,3 @@ describe('catalogBatchProcess', () => {
     ).toMatchSnapshot();
   });
 });
-
-function mockClass(spec) {
-  const proto = jest.fn(() => spec);
-  proto.prototype = spec;
-  return proto;
-}
