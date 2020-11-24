@@ -20,7 +20,6 @@ export const catalogBatchProcess: SQSHandler = async (event) => {
       } catch (error) {
         console.log(error);
       }
-
       try {
         await createProductDb(payload);
         console.log('Going to publish message...');
@@ -30,6 +29,12 @@ export const catalogBatchProcess: SQSHandler = async (event) => {
           ${record.body}
           `,
           TopicArn: process.env.SNS_ARN,
+          MessageAttributes: {
+            name: {
+              DataType: 'String',
+              StringValue: Number(payload.price) > 100 ? 'foo' : 'bar',
+            },
+          },
         })
           .promise()
           .then((value) => console.log(value));
@@ -42,6 +47,12 @@ export const catalogBatchProcess: SQSHandler = async (event) => {
           ${JSON.stringify(error)}
           `,
           TopicArn: process.env.SNS_ARN,
+          MessageAttributes: {
+            name: {
+              DataType: 'String',
+              StringValue: Number(payload.price) > 100 ? 'foo' : 'bar',
+            },
+          },
         })
           .promise()
           .then((value) => console.log(value));

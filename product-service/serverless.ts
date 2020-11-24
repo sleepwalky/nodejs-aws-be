@@ -67,10 +67,26 @@ const serverlessConfiguration: Serverless = {
       SNSSubscription: {
         Type: 'AWS::SNS::Subscription',
         Properties: {
-          Endpoint: 'keeweery@gmail.com',
+          Endpoint: 'keeweery+filter1@gmail.com',
           Protocol: 'email',
           TopicArn: {
             Ref: 'SNSTopic',
+          },
+          FilterPolicy: {
+            name: ['foo'],
+          },
+        },
+      },
+      SNSSubscription1: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Endpoint: 'keeweery+filter2@gmail.com',
+          Protocol: 'email',
+          TopicArn: {
+            Ref: 'SNSTopic',
+          },
+          FilterPolicy: {
+            name: ['bar'],
           },
         },
       },
