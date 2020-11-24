@@ -25,7 +25,9 @@ Object {
 exports[`getProductById should return product by id 1`] = `
 Object {
   "body": "{
-  \\"id\\": \\"123\\"
+  \\"0\\": {
+    \\"id\\": \\"123\\"
+  }
 }",
   "headers": Object {
     "Access-Control-Allow-Credentials": true,

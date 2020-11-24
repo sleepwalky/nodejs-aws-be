@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`catalogBatchProcess should publish error messages 1`] = `
+Object {
+  "Message": "
+          There was an error:
+          {\\"title\\":\\"Крылья: Птицы Европы\\",\\"description\\":\\"Дополнение\\",\\"price\\":\\"87\\",\\"img\\":\\"https://igraj.by/upload/iblock/f5a/f5a48e0762001ad9be2371423df702ab.jpg\\",\\"count\\":\\"4\\"}
+          \\"some error\\"
+          ",
+  "MessageAttributes": Object {
+    "name": Object {
+      "DataType": "String",
+      "StringValue": "bar",
+    },
+  },
+  "TopicArn": undefined,
+}
+`;

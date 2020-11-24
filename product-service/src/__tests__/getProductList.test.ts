@@ -1,10 +1,7 @@
-import { getProductList } from '../src/getProductList';
-import { getProductsFromDb } from '../db/product';
+import { getProductList } from '../getProductList';
+import { getProductsFromDb } from '../../db/product';
 
-jest.mock('../db/product', () => ({
-  __esModule: true,
-  getProductsFromDb: jest.fn(),
-}));
+jest.mock('../../db/product');
 
 describe('getProductList', () => {
   beforeEach(() => {
