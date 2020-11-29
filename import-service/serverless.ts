@@ -26,6 +26,9 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      SQS_QUEUE: {
+        Ref: 'catalogItemsQueue',
+      },
     },
     iamRoleStatements: [
       {
@@ -34,8 +37,36 @@ const serverlessConfiguration: Serverless = {
         Action: ['s3:PutObject', 's3:DeleteObject', 's3:GetObject'],
         Resource: 'arn:aws:s3:::store-imported-products/*',
       },
+      {
+        Effect: 'Allow',
+        Action: ['SQS:*'],
+        Resource: {
+          'Fn::GetAtt': ['catalogItemsQueue', 'Arn'],
+        },
+      },
     ],
   },
+  resources: {
+    Resources: {
+      catalogItemsQueue: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'catalog-items-queue',
+        },
+      },
+    },
+    Outputs: {
+      catalogItemsQueueUrl: {
+        Value: { Ref: 'catalogItemsQueue' },
+      },
+      catalogItemsQueueArn: {
+        Value: {
+          'Fn::GetAtt': ['catalogItemsQueue', 'Arn'],
+        },
+      },
+    },
+  },
+
   functions: {
     importProductsFile: {
       handler: 'handlers.importProductsFile',

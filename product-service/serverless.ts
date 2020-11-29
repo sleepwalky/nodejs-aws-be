@@ -24,10 +24,26 @@ const serverlessConfiguration: Serverless = {
     runtime: 'nodejs12.x',
     profile: 'rss',
     region: 'eu-west-1',
-    stage: 'prod',
+    stage: 'dev',
     apiGateway: {
       minimumCompressionSize: 1024,
     },
+    iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: 'sqs:*',
+        Resource:
+          '${cf:import-service-${self:provider.stage}.catalogItemsQueueArn}',
+      },
+      {
+        Effect: 'Allow',
+        Action: 'sns:*',
+        Resource: {
+          Ref: 'SNSTopic',
+        },
+      },
+    ],
+
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       PG_HOST: process.env.PG_HOST,
@@ -35,11 +51,50 @@ const serverlessConfiguration: Serverless = {
       PG_DATABASE: process.env.PG_DATABASE,
       PG_USERNAME: process.env.PG_USERNAME,
       PG_PASSWORD: process.env.PG_PASSWORD,
+      SNS_ARN: {
+        Ref: 'SNSTopic',
+      },
+    },
+  },
+  resources: {
+    Resources: {
+      SNSTopic: {
+        Type: 'AWS::SNS::Topic',
+        Properties: {
+          TopicName: 'catalog-process-topic',
+        },
+      },
+      SNSSubscription: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Endpoint: 'keeweery+filter1@gmail.com',
+          Protocol: 'email',
+          TopicArn: {
+            Ref: 'SNSTopic',
+          },
+          FilterPolicy: {
+            name: ['foo'],
+          },
+        },
+      },
+      SNSSubscription1: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Endpoint: 'keeweery+filter2@gmail.com',
+          Protocol: 'email',
+          TopicArn: {
+            Ref: 'SNSTopic',
+          },
+          FilterPolicy: {
+            name: ['bar'],
+          },
+        },
+      },
     },
   },
   functions: {
     getProductList: {
-      handler: 'getProductList.getProductList',
+      handler: 'handlers.getProductList',
       events: [
         {
           http: {
@@ -51,7 +106,7 @@ const serverlessConfiguration: Serverless = {
       ],
     },
     getProductById: {
-      handler: 'getProductById.getProductById',
+      handler: 'handlers.getProductById',
       events: [
         {
           http: {
@@ -70,13 +125,25 @@ const serverlessConfiguration: Serverless = {
       ],
     },
     createProduct: {
-      handler: 'createProduct.createProduct',
+      handler: 'handlers.createProduct',
       events: [
         {
           http: {
             method: 'post',
             path: 'products',
             cors: true,
+          },
+        },
+      ],
+    },
+    catalogBatchProcess: {
+      handler: 'handlers.catalogBatchProcess',
+      events: [
+        {
+          sqs: {
+            batchSize: 5,
+            arn:
+              '${cf:import-service-${self:provider.stage}.catalogItemsQueueArn}',
           },
         },
       ],

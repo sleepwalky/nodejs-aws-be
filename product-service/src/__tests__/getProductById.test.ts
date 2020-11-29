@@ -1,14 +1,15 @@
 import { getProductById } from '../getProductById';
-import { getProductsFromDb } from '../db/product';
+import { getProductByIdFromDb } from '../../db/product';
 
-jest.mock('../db/product', () => ({
-  __esModule: true,
-  getProductsFromDb: jest.fn(),
-}));
+jest.mock('../../db/product');
 
 describe('getProductById', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should return 404 if there is no product with such id', async () => {
-    (getProductsFromDb as jest.Mock).mockResolvedValue([]);
+    (getProductByIdFromDb as jest.Mock).mockResolvedValue(undefined);
     const result = await getProductById(
       {
         pathParameters: {
@@ -23,7 +24,7 @@ describe('getProductById', () => {
   });
 
   it('should return product by id', async () => {
-    (getProductsFromDb as jest.Mock).mockResolvedValue([{ id: '123' }]);
+    (getProductByIdFromDb as jest.Mock).mockResolvedValue([{ id: '123' }]);
     const result = await getProductById(
       {
         pathParameters: {
@@ -38,7 +39,7 @@ describe('getProductById', () => {
   });
 
   it('should return 500 if db throws', async () => {
-    (getProductsFromDb as jest.Mock).mockRejectedValue(null);
+    (getProductByIdFromDb as jest.Mock).mockRejectedValue(null);
     const result = await getProductById(
       {
         pathParameters: {
