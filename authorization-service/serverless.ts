@@ -1,4 +1,7 @@
 import type { Serverless } from 'serverless/aws';
+import { config } from 'dotenv';
+
+config();
 
 const serverlessConfiguration: Serverless = {
   service: {
@@ -11,14 +14,16 @@ const serverlessConfiguration: Serverless = {
   custom: {
     webpack: {
       webpackConfig: './webpack.config.js',
-      includeModules: true
-    }
+      includeModules: true,
+    },
   },
   // Add the serverless-webpack plugin
   plugins: ['serverless-webpack'],
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
+    profile: 'rss',
+    region: 'eu-west-1',
     apiGateway: {
       minimumCompressionSize: 1024,
     },
@@ -27,18 +32,20 @@ const serverlessConfiguration: Serverless = {
     },
   },
   functions: {
-    hello: {
-      handler: 'handler.hello',
-      events: [
-        {
-          http: {
-            method: 'get',
-            path: 'hello',
-          }
-        }
-      ]
-    }
-  }
-}
+    basicAuth: {
+      handler: 'handler.basicAuthorizer',
+    },
+  },
+  resources: {
+    Resources: {},
+    Outputs: {
+      BasicAuthArn: {
+        Value: {
+          'Fn::GetAtt': [],
+        },
+      },
+    },
+  },
+};
 
 module.exports = serverlessConfiguration;
