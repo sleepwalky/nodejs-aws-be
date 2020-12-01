@@ -13,6 +13,10 @@ const serverlessConfiguration: Serverless = {
       webpackConfig: './webpack.config.js',
       includeModules: true,
     },
+    // https://www.serverless.com/framework/docs/providers/aws/guide/variables#reference-cloudformation-outputs
+    basicAuthArn: {
+      'Fn::ImportValue': 'BasicAuthArn',
+    },
   },
   // Add the serverless-webpack plugin
   plugins: ['serverless-webpack'],
@@ -54,6 +58,32 @@ const serverlessConfiguration: Serverless = {
           QueueName: 'catalog-items-queue',
         },
       },
+      GatewayResponseAccessDenied: {
+        Type: 'AWS::ApiGateway::GatewayResponse',
+        Properties: {
+          RestApiId: {
+            Ref: 'ApiGatewayRestApi',
+          },
+          ResponseType: 'ACCESS_DENIED',
+          ResponseParameters: {
+            'gatewayresponse.header.Access-Control-Allow-Origin': "'*'",
+            'gatewayresponse.header.Access-Control-Allow-Headers': "'*'",
+          },
+        },
+      },
+      GatewayResponseUnauthorized: {
+        Type: 'AWS::ApiGateway::GatewayResponse',
+        Properties: {
+          RestApiId: {
+            Ref: 'ApiGatewayRestApi',
+          },
+          ResponseType: 'UNAUTHORIZED',
+          ResponseParameters: {
+            'gatewayresponse.header.Access-Control-Allow-Origin': "'*'",
+            'gatewayresponse.header.Access-Control-Allow-Headers': "'*'",
+          },
+        },
+      },
     },
     Outputs: {
       catalogItemsQueueUrl: {
@@ -76,6 +106,14 @@ const serverlessConfiguration: Serverless = {
             method: 'get',
             path: 'import',
             cors: true,
+            authorizer: {
+              type: 'TOKEN',
+              name: 'basicAuth',
+              // https://www.serverless.com/framework/docs/providers/aws/guide/variables#reference-cloudformation-outputs
+              arn: '${self:custom.basicAuthArn}',
+              resultTtlInSeconds: 0,
+              identitySource: 'method.request.header.Authorization',
+            },
             request: {
               parameters: {
                 querystrings: {

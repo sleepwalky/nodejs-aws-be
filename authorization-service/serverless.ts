@@ -16,9 +16,13 @@ const serverlessConfiguration: Serverless = {
       webpackConfig: './webpack.config.js',
       includeModules: true,
     },
+    dotenv: {
+      path: '.env',
+      basePath: './',
+    },
   },
   // Add the serverless-webpack plugin
-  plugins: ['serverless-webpack'],
+  plugins: ['serverless-webpack', 'serverless-dotenv-plugin'],
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
@@ -41,7 +45,11 @@ const serverlessConfiguration: Serverless = {
     Outputs: {
       BasicAuthArn: {
         Value: {
-          'Fn::GetAtt': [],
+          //https://stackoverflow.com/questions/61992001/how-you-reference-the-function-arn-of-a-function-lambda-in-serverless-yml-file
+          'Fn::GetAtt': ['BasicAuthLambdaFunction', 'Arn'],
+        },
+        Export: {
+          Name: 'BasicAuthArn',
         },
       },
     },
