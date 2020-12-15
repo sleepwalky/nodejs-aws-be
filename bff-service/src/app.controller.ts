@@ -26,7 +26,8 @@ export class AppController {
         ...(Object.keys(req.body || {}).length > 0 && { data: req.body }),
       };
 
-      const isProductList = req.originalUrl === '/products';
+      const isProductList =
+        req.originalUrl === '/products' && req.method === 'GET';
 
       if (isProductList) {
         const cachedProductList = cache.get('products');
